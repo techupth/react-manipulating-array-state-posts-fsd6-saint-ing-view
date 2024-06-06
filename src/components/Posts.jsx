@@ -1,29 +1,56 @@
+import { useState } from "react";
+import postList from "./PostArray";
+
 function Posts() {
+  const [likeList, setLikeList] = useState(postList);
+
+  const handleAddLike = (index) => {
+    let newLike = [...likeList];
+    newLike[index].likes += 1;
+    setLikeList(newLike);
+  };
+  const handleAddUnLike = (index) => {
+    let newLike = [...likeList];
+    if (newLike[index].likes > 0) {
+      newLike[index].likes -= 1;
+      setLikeList(newLike);
+    }
+  };
   return (
-    <div class="app-wrapper">
-      <h1 class="app-title">Posts</h1>
-      <div class="post-list">
-        <div class="post-item">
-          <div class="post-header">
-            <h2>Post Title #1</h2>
-            <div class="post-social-media-stats">
-              <span class="stats-topic">Likes: </span>
-              <span class="post-likes">10</span>
+    <div className="app-wrapper">
+      <h1 className="app-title">Posts</h1>
+      {postList.map((item, index) => {
+        return (
+          <div key={index} className="post-list">
+            <div className="post-item">
+              <div className="post-header">
+                <h2>
+                  {item.title}#{item.id}
+                </h2>
+                <div className="post-social-media-stats">
+                  <span className="stats-topic">Likes: </span>
+                  <span className="post-likes">{item.likes}</span>
+                </div>
+                <p className="post-content">{item.content}</p>
+                <div className="post-actions">
+                  <button
+                    className="like-button"
+                    onClick={() => handleAddLike(index)}
+                  >
+                    Like
+                  </button>
+                  <button
+                    className="dislike-button"
+                    onClick={() => handleAddUnLike(index)}
+                  >
+                    Dislike
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-          <p class="post-content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-            vel turpis vestibulum, aliquet ipsum vitae, auctor risus. Morbi
-            tincidunt, leo non molestie consectetur, elit libero faucibus
-            tellus, sed fringilla tortor libero sit amet odio. Maecenas sed ante
-            condimentum mauris euismod pellentesque eu eu justo...
-          </p>
-          <div class="post-actions">
-            <button class="like-button">Like</button>
-            <button class="dislike-button">Dislike</button>
-          </div>
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 }
